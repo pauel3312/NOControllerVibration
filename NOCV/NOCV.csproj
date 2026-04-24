@@ -8,7 +8,7 @@
         <PackageId>Pauel3312.NOCV</PackageId>
         <Title>NuclearOptionControllerVibration</Title>
         <Description>A mod for exporting vibration data to controllers.</Description>
-        <Version>0.33.2.0</Version>
+        <Version>0.33.2.1</Version>
         <Authors>Pauel3312</Authors>
         <PackageTags>nuclear;option;bepinex</PackageTags>
 
@@ -92,11 +92,5 @@
         <!-- Copy the build output -->
         <Message Text="Copying build output assemblies from $(OutDir)*.dll to $(ModDestination)\$(AssemblyName)" Importance="high"/>
         <Copy SourceFiles="@(DllFiles)" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
-
-        <!-- Copy README & CHANGELOG -->
-        <Message Text="Copying README from $(ProjectDir)..\README.md to $(ModDestination)\$(AssemblyName)" Importance="high"/>
-        <Copy SourceFiles="$(ProjectDir)..\README.md" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
-        <Message Text="Copying CHANGELOG from $(ProjectDir)..\CHANGELOG.md to $(ModDestination)" Importance="high"/>
-        <Copy SourceFiles="$(ProjectDir)..\CHANGELOG.md" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
     </Target>
 </Project>

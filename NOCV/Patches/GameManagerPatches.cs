@@ -8,18 +8,16 @@ namespace NOCV.Patches;
 [HarmonyPatch(typeof(GameManager))]
 public class GameManagerPatches
 {
-    /// <summary>
-    /// Test entrypoint, will try to send vibration when the game loads a mission.
-    /// </summary>
-    /// <param name="__instance"></param>
-    [HarmonyPostfix]
-    [HarmonyPatch(nameof(GameManager.SetupGame))]
-    public static void SetupGamePostfix()
-    {
-        NOCV.Logger.LogDebug("In postfix");
-        foreach (var controller in GameManager.playerInput.controllers.Joysticks)
-        {
-            NOCV.Logger.LogDebug($"{controller._hardwareName};{controller.hatCount};{controller.axisCount};{controller.axis2DCount};{controller.vibrationMotorCount}");
-        }
-    }
-}
+     /// <summary>
+     /// Test entrypoint, will try to send vibration when the game loads a mission.
+     /// </summary>
+     [HarmonyPostfix]
+     [HarmonyPatch(nameof(GameManager.SetupGame))]
+     public static void SetupGamePostfix()
+     {
+         foreach (var controller in GameManager.playerInput.controllers.Joysticks)
+         {
+             NOCV.Logger.LogDebug($"{controller._hardwareName}; has {controller.vibrationMotorCount} motors; {(controller.supportsVibration ? "supports vibration" : "Does not support vibration")}");
+         }
+     }
+}   
