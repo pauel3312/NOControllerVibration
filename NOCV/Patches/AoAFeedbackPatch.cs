@@ -1,4 +1,6 @@
 using HarmonyLib;
+using NOCV.Features;
+using NOCV.Helpers;
 
 namespace NOCV.Patches;
 
@@ -6,7 +8,7 @@ namespace NOCV.Patches;
 ///     Patches the AoA feedback class to add vibration feedback.
 /// </summary>
 [HarmonyPatch(typeof(AoAFeedback))]
-public class AoAFeedbackPatch
+public class AoAFeedbackPatch: VibChannelUser<AoAFeedbackPatch>
 {
     /// <summary>
     /// Main AoA feedback patch (this function alone is like 80% of the feeling of vibration feedback lol)
@@ -17,7 +19,7 @@ public class AoAFeedbackPatch
     public static void AoAFeedbackPostfix(Aircraft aircraft)    
     {
         if (aircraft == null) return;
-        GameManager.playerInput.SetVibration(1, AoAFeedback.shake*(1/AoAFeedback.aoaEffects.ShakeFactor));
+        Channel!.SetVibration( AoAFeedback.shake*(1/AoAFeedback.aoaEffects.ShakeFactor), 0f);
     }
     
     // [HarmonyPatch(nameof(AoAFeedback.SetupAircraft))]

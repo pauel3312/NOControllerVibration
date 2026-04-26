@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NOCV.Helpers;
 using NuclearOption.Networking;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace NOCV.Patches;
 /// Add vibration to missile launches
 /// </summary>
 [HarmonyPatch(typeof(MountedMissile))]
-public class MountedMissilePatches
+public class MountedMissilePatches: VibChannelUser<MountedMissilePatches>
 {
     /// <summary>
     /// Add vibration on missile shots.
@@ -26,6 +27,6 @@ public class MountedMissilePatches
         WeaponStation weaponStation, GlobalPosition aimpoint)
     {
         if (!(owner.GetPlayer()?.IsLocalPlayer ?? false) || __instance.fired) return;
-        GameManager.playerInput.SetVibration(0, 1f, 0.1f, false);
+        Channel!.SetVibration(0f, 0.25f, 0.1f);
     }
 }

@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NOCV.Helpers;
 using NuclearOption.Networking;
 
 namespace NOCV.Patches;
@@ -7,7 +8,7 @@ namespace NOCV.Patches;
 /// Adds vibration feedback on gunshots 
 /// </summary>
 [HarmonyPatch(typeof(Gun))]
-public class GunPatches
+public class GunPatches: VibChannelUser<GunPatches>
 {
     /// <summary>
     ///     Vibration feedback on bullet spawn.
@@ -20,6 +21,6 @@ public class GunPatches
     public static void SpawnBulletPrefix(Gun __instance, float timeOffset)
     {
         if (!(__instance.attachedUnit.GetPlayer()?.IsLocalPlayer ?? false)) return;
-        GameManager.playerInput.SetVibration(0, 1f, 0.1f, false);
+        Channel!.SetVibration(0f, 1f, 0.1f);
     }
 }

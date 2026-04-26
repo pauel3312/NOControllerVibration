@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
+using NOCV.Features;
+using NOCV.Helpers;
 using UnityEngine;
 
 
@@ -10,12 +12,12 @@ namespace NOCV.Patches;
 ///     Add vibration to bay doors. 
 /// </summary>
 [HarmonyPatch(typeof(BayDoor))]
-public class BayDoorPatches
+public class BayDoorPatches: VibChannelUser<BayDoorPatches>
 {
     private static void StartVibrationForBayDoor(BayDoor door)
     {
         if (!GameManager.IsLocalAircraft(door.GetComponentInParent<AeroPart>().parentUnit)) return;
-        GameManager.playerInput.SetVibration(1, door is CargoRamp ? 0.75f : 0.25f,door.doorAudioSource.clip.length, false);
+        Channel!.SetVibration(door is CargoRamp ? 0.75f : 0.25f, 0f, door.doorAudioSource.clip.length);
     }
     
     /// <summary>

@@ -1,4 +1,6 @@
 using HarmonyLib;
+using NOCV.Features;
+using NOCV.Helpers;
 
 namespace NOCV.Patches;
 
@@ -19,5 +21,13 @@ public class GameManagerPatches
          {
              NOCV.Logger.LogDebug($"{controller._hardwareName}; has {controller.vibrationMotorCount} motors; {(controller.supportsVibration ? "supports vibration" : "Does not support vibration")}");
          }
+         VibOnAudioSources.Initialize();
+         VibrationService.Initialize();
+         AoAFeedbackPatch.Setup();
+         BayDoorPatches.Setup();
+         GearVibrationPatch.Setup();
+         GunPatches.Setup();
+         MountedMissilePatches.Setup();
+         VRSWarningPatch.Setup();
      }
 }   

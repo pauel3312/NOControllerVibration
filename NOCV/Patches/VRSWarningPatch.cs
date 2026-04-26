@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using BepInEx.Logging;
 using HarmonyLib;
+using NOCV.Helpers;
 
 namespace NOCV.Patches;
 
@@ -12,7 +11,7 @@ namespace NOCV.Patches;
 /// </summary>
 [HarmonyPatch(typeof(VRSWarning))]
 // ReSharper disable once InconsistentNaming
-public class VRSWarningPatch
+public class VRSWarningPatch: VibChannelUser<VRSWarningPatch>
 {
     private static bool _isVibOn;
     // ReSharper disable once InconsistentNaming
@@ -21,12 +20,12 @@ public class VRSWarningPatch
         if (_isVibOn && value < 0.1f)
         {
             _isVibOn = false;
-            GameManager.playerInput.SetVibration(0, 0);
+            Channel!.Disable();
             return;
         }
         if (value < 0.1f) return;
         _isVibOn = true;
-        GameManager.playerInput.SetVibration(0, value);
+        Channel!.SetVibration(0, value);
     }
 
     
