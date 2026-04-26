@@ -8,7 +8,11 @@ namespace NOCV.Helpers;
 /// <typeparam name="T"></typeparam>
 public abstract class VibChannelUser<T> where T : VibChannelUser<T>
 {
-    internal static VibrationChannel? Channel;
+    /// <summary>
+    ///     The vibration channel to be used to send vibration events.
+    /// </summary>
+    // ReSharper disable once StaticMemberInGenericType
+    protected static VibrationChannel? Channel;
 
     /// <summary>
     /// Sets up the vibration feedback by creating a channel in the vibration service.

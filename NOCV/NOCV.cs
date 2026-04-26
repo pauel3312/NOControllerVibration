@@ -3,6 +3,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using NOCV.Helpers;
+using UnityEngine;
 
 namespace NOCV;
 
@@ -72,6 +73,6 @@ public class NOCV: BaseUnityPlugin
 
         Logger.LogDebug("Unpatched!");
     }
-    // TODO stuff breaking vibration.
+    // TODO shockwave vibration
 
 }
