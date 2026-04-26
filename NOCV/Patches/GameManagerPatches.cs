@@ -30,5 +30,6 @@ public class GameManagerPatches
          MountedMissilePatches.Setup();
          VRSWarningPatch.Setup();
          CargoRampPatches.Setup();
+         AircraftMachPatch.Setup();
      }
 }   

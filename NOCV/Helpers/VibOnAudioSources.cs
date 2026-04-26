@@ -69,7 +69,7 @@ public class VibOnAudioSources: MonoBehaviour
     /// <returns> the given source for transpiler convenience </returns>
     public static AudioSource StartPlaying(AudioSource source, int motorIndex, float maxMagnitude)
     {
-        NOCV.Logger.LogDebug($"Added source. Now has {PlayingSources.Count} sources, with max magnitude {maxMagnitude}.");
+        // NOCV.Logger.LogDebug($"Added source. Now has {PlayingSources.Count} sources, with max magnitude {maxMagnitude}.");
         PlayingSources.Add(new VibForAudioSourceParams(source, motorIndex, maxMagnitude));
         return source;
     }
@@ -83,7 +83,7 @@ public class VibOnAudioSources: MonoBehaviour
             {
                 _channel!.Disable();
                 PlayingSources.Remove(playingSource);
-                NOCV.Logger.LogDebug($"Removed source. Now has {PlayingSources.Count} sources.");
+                // NOCV.Logger.LogDebug($"Removed source. Now has {PlayingSources.Count} sources.");
                 continue;
             }
             if (!motorMagnitudes.ContainsKey(playingSource.MotorIndex))

@@ -1,5 +1,6 @@
 using HarmonyLib;
 using NOCV.Helpers;
+// ReSharper disable InconsistentNaming
 
 namespace NOCV.Patches;
 
@@ -34,6 +35,10 @@ public class CargoRampPatches: VibChannelUser<CargoRampPatches>
         Channel!.Disable();
     }
 
+    /// <summary>
+    /// Adds vibration to closing cargoRamps
+    /// </summary>
+    /// <param name="__instance"></param>
     [HarmonyPatch(nameof(CargoRamp.Closing))]
     [HarmonyPostfix]
     public static void ClosingPostfix(CargoRamp __instance)
