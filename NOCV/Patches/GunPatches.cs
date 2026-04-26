@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NuclearOption.Networking;
 
 namespace NOCV.Patches;
 
@@ -15,9 +16,10 @@ public class GunPatches
     /// <param name="timeOffset"></param>
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Gun.SpawnBullet))]
+    // ReSharper disable once InconsistentNaming
     public static void SpawnBulletPrefix(Gun __instance, float timeOffset)
     {
-        if (!__instance.attachedUnit.IsLocalPlayer) return;
+        if (!(__instance.attachedUnit.GetPlayer()?.IsLocalPlayer ?? false)) return;
         GameManager.playerInput.SetVibration(0, 1f, 0.1f, false);
     }
 }

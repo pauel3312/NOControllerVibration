@@ -14,6 +14,7 @@ public class BayDoorPatches
 {
     private static void StartVibrationForBayDoor(BayDoor door)
     {
+        if (!GameManager.IsLocalAircraft(door.GetComponentInParent<AeroPart>().parentUnit)) return;
         GameManager.playerInput.SetVibration(1, door is CargoRamp ? 0.75f : 0.25f,door.doorAudioSource.clip.length, false);
     }
     
@@ -25,7 +26,7 @@ public class BayDoorPatches
     [HarmonyTranspiler]
     [HarmonyPatch(typeof(BayDoor), nameof(BayDoor.Update))]
 
-    public static IEnumerable<CodeInstruction> UpdateTranspiler(IEnumerable<CodeInstruction> instructions) // TODO test
+    public static IEnumerable<CodeInstruction> UpdateTranspiler(IEnumerable<CodeInstruction> instructions)
     {
         var playMethod = AccessTools.Method(typeof(AudioSource), nameof(AudioSource.Play));
         var vibMethod = AccessTools.Method(typeof(BayDoorPatches), nameof(StartVibrationForBayDoor));
@@ -34,7 +35,7 @@ public class BayDoorPatches
         foreach (var instr in instructions)
         {
             if (previousCalls)
-            {   // TODO figure out a way to check whether the owner of the bay is the local player. 
+            { 
                 yield return new CodeInstruction(OpCodes.Ldarg_0);
                 yield return new CodeInstruction(OpCodes.Call, vibMethod);
                 previousCalls = false;

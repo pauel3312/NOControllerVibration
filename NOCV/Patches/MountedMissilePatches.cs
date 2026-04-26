@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NuclearOption.Networking;
 using UnityEngine;
 
 namespace NOCV.Patches;
@@ -20,10 +21,13 @@ public class MountedMissilePatches
     /// <param name="aimpoint"></param>
     [HarmonyPrefix]
     [HarmonyPatch(nameof(MountedMissile.Fire))]
+    // ReSharper disable once InconsistentNaming
     public static void FirePatch(MountedMissile __instance, Unit owner, Unit target, Vector3 inheritedVelocity,
         WeaponStation weaponStation, GlobalPosition aimpoint)
     {
-        if (!owner.IsLocalPlayer || __instance.fired) return;
+        if (!(owner.GetPlayer()?.IsLocalPlayer ?? false) || __instance.fired) return;
         GameManager.playerInput.SetVibration(0, 1f, 0.1f, false);
     }
 }
+
+// TODO Gear
