@@ -17,11 +17,6 @@ public class AoAFeedbackPatch
     public static void AoAFeedbackPostfix(Aircraft aircraft)    
     {
         if (aircraft == null) return;
-        if (aircraft.name == "AttackHelo1")
-        {
-            // NOCV.Logger.LogDebug(AoAFeedback.shake);
-            return; // TODO figure out a custom formula maybe
-        }
         GameManager.playerInput.SetVibration(1, AoAFeedback.shake*(1/AoAFeedback.aoaEffects.ShakeFactor));
     }
     

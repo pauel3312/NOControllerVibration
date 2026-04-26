@@ -29,5 +29,3 @@ public class MountedMissilePatches
         GameManager.playerInput.SetVibration(0, 1f, 0.1f, false);
     }
 }
-
-// TODO Gear

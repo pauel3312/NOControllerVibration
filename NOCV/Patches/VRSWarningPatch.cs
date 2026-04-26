@@ -14,9 +14,9 @@ namespace NOCV.Patches;
 // ReSharper disable once InconsistentNaming
 public class VRSWarningPatch
 {
-    private bool _isVibOn;
+    private static bool _isVibOn;
     // ReSharper disable once InconsistentNaming
-    private void VRSVibration(float value)
+    private static void VRSVibration(float value)
     {
         if (_isVibOn && value < 0.1f)
         {
