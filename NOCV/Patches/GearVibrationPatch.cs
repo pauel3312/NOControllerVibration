@@ -38,7 +38,7 @@ public class GearVibrationPatch: VibChannelUser<GearVibrationPatch>
         var tireNoiseSourceField = AccessTools.Field(typeof(LandingGear), nameof(LandingGear.tireNoiseSound));
         var tireSlidSourceField = AccessTools.Field(typeof(LandingGear), nameof(LandingGear.tireSkidSound));
 
-        var vibCallMethod = AccessTools.Method(typeof(VibOnAudioSources), nameof(VibOnAudioSources.StartPlaying));
+        var vibCallMethod = AccessTools.Method(typeof(GearVibrationPatch), nameof(CheckAndCallStartPlay));
         
         CodeInstruction prev = null!;
         
@@ -51,11 +51,13 @@ public class GearVibrationPatch: VibChannelUser<GearVibrationPatch>
                 {
                     yield return new CodeInstruction(OpCodes.Ldc_I4_1);
                     yield return new CodeInstruction(OpCodes.Ldc_R4, 0.1f);
+                    yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Call, vibCallMethod);
                 } else if (prev.OperandIs(tireSlidSourceField))
                 {
                     yield return new CodeInstruction(OpCodes.Ldc_I4_0);
                     yield return new CodeInstruction(OpCodes.Ldc_R4, 0.5f);
+                    yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Call, vibCallMethod);
                 }            }
             prev = instr;
@@ -73,7 +75,7 @@ public class GearVibrationPatch: VibChannelUser<GearVibrationPatch>
     public static IEnumerable<CodeInstruction> OnsetGearTranspiler(IEnumerable<CodeInstruction> instructions) {
         var audioSourcePlayMethod = AccessTools.Method(typeof(AudioSource), nameof(AudioSource.Play));
         var foldSourceField = AccessTools.Field(typeof(LandingGear), nameof(LandingGear.foldSoundSource));
-        var vibCallMethod = AccessTools.Method(typeof(VibOnAudioSources), nameof(VibOnAudioSources.StartPlaying));
+        var vibCallMethod = AccessTools.Method(typeof(GearVibrationPatch), nameof(CheckAndCallStartPlay));
 
         CodeInstruction prev = null!;
 
@@ -81,16 +83,20 @@ public class GearVibrationPatch: VibChannelUser<GearVibrationPatch>
         {
             if (prev != null && instr.Calls(audioSourcePlayMethod) && prev.OperandIs(foldSourceField))
             {
-                NOCV.Logger.LogDebug("Found fold sound source");
                 yield return new CodeInstruction(OpCodes.Ldc_I4_1);
                 yield return new CodeInstruction(OpCodes.Ldc_R4, 0.15f);
+                yield return new CodeInstruction(OpCodes.Ldarg_0);
                 yield return new CodeInstruction(OpCodes.Call, vibCallMethod);
             }
             
             prev = instr;
             yield return instr;
         }
-        
+    }
+
+    private static AudioSource CheckAndCallStartPlay(AudioSource source, int motorIndex, float maxMagnitude, LandingGear gear)
+    {
+        return !gear.aircraft.Player.IsLocalPlayer ? source : VibOnAudioSources.StartPlaying(source, motorIndex, maxMagnitude);
     }
     
     

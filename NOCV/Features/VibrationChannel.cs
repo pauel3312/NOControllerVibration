@@ -61,7 +61,6 @@ public class VibrationChannel
                 break;
         }
         Duration = float.PositiveInfinity;
-        NOCV.Logger.LogDebug($"{motor} : {magnitude} : {LowAmount} : {HighAmount}");
     }
 
     /// <summary>
