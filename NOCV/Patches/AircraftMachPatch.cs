@@ -35,7 +35,7 @@ public class AircraftMachPatch:VibChannelUser<AircraftMachPatch>
 
     private static float StartVibration(float num)
     {
-        Channel!.SetVibration(0f, num, 2*Time.fixedDeltaTime);
+        Channel!.SetVibration(0f, num*PluginConfig.MachMultiplier.Value, 2*Time.fixedDeltaTime);
         return num;
     }
 }

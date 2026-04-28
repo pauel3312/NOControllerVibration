@@ -1,5 +1,4 @@
 using HarmonyLib;
-using NOCV.Features;
 using NOCV.Helpers;
 using UnityEngine;
 
@@ -31,10 +30,10 @@ public class AoAFeedbackPatch: VibChannelUser<AoAFeedbackPatch>
             var AoAFactor = Mathf.Max(Mathf.Abs((float)aoaDegrees-10) - AoAFeedback.aoaEffects.OnsetAlpha, 0.0f) /
                             (AoAFeedback.aoaEffects.FullVolumeAlpha - AoAFeedback.aoaEffects.OnsetAlpha);
             // NOCV.Logger.LogDebug($"{aoaDegrees}: {AoAFactor}; {speedFactor}");
-            Channel!.SetVibration(speedFactor * AoAFactor, 0f);
+            Channel!.SetVibration(speedFactor * AoAFactor * PluginConfig.AoAMultiplier.Value, 0f);
         } else
         {
-            Channel!.SetVibration(AoAFeedback.shake * (1 / AoAFeedback.aoaEffects.ShakeFactor), 0f);
+            Channel!.SetVibration(AoAFeedback.shake * (1 / AoAFeedback.aoaEffects.ShakeFactor) * PluginConfig.AoAMultiplier.Value, 0f);
         }    
     }
     

@@ -21,7 +21,7 @@ public class GearVibrationPatch: VibChannelUser<GearVibrationPatch>
     public static void LatchSoundVibration(LandingGear __instance)
     {
         if (!__instance.aircraft.Player.IsLocalPlayer) return;
-        Channel!.SetVibration(0f, 0.4f, __instance.latchSound.length/2);
+        Channel!.SetVibration(0f, PluginConfig.LatchGearVibrationAmount.Value, __instance.latchSound.length/2);
     }
 
     /// <summary>
@@ -49,13 +49,13 @@ public class GearVibrationPatch: VibChannelUser<GearVibrationPatch>
                 if (prev.OperandIs(tireNoiseSourceField))
                 {
                     yield return new CodeInstruction(OpCodes.Ldc_I4_1);
-                    yield return new CodeInstruction(OpCodes.Ldc_R4, 0.1f);
+                    yield return new CodeInstruction(OpCodes.Ldc_R4, PluginConfig.RollingVibMax.Value);
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Call, vibCallMethod);
                 } else if (prev.OperandIs(tireSlidSourceField))
                 {
                     yield return new CodeInstruction(OpCodes.Ldc_I4_0);
-                    yield return new CodeInstruction(OpCodes.Ldc_R4, 0.5f);
+                    yield return new CodeInstruction(OpCodes.Ldc_R4, PluginConfig.SliddingVibMax.Value);
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Call, vibCallMethod);
                 }            }
@@ -83,7 +83,7 @@ public class GearVibrationPatch: VibChannelUser<GearVibrationPatch>
             if (prev != null && instr.Calls(audioSourcePlayMethod) && prev.OperandIs(foldSourceField))
             {
                 yield return new CodeInstruction(OpCodes.Ldc_I4_1);
-                yield return new CodeInstruction(OpCodes.Ldc_R4, 0.15f);
+                yield return new CodeInstruction(OpCodes.Ldc_R4, PluginConfig.GearMovingMax.Value);
                 yield return new CodeInstruction(OpCodes.Ldarg_0);
                 yield return new CodeInstruction(OpCodes.Call, vibCallMethod);
             }

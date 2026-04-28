@@ -21,6 +21,6 @@ public class GunPatches: VibChannelUser<GunPatches>
     public static void SpawnBulletPrefix(Gun __instance, float timeOffset)
     {
         if (!(__instance.attachedUnit.GetPlayer()?.IsLocalPlayer ?? false)) return;
-        Channel!.SetVibration(0f, 1f, 0.1f);
+        Channel!.SetVibration(0f, PluginConfig.GunFiringAmount.Value, PluginConfig.GunFiringDuration.Value);
     }
 }

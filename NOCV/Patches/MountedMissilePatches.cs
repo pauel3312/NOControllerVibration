@@ -27,6 +27,6 @@ public class MountedMissilePatches: VibChannelUser<MountedMissilePatches>
         WeaponStation weaponStation, GlobalPosition aimpoint)
     {
         if (!(owner.GetPlayer()?.IsLocalPlayer ?? false) || __instance.fired) return;
-        Channel!.SetVibration(0f, 0.1f, 0.1f);
+        Channel!.SetVibration(0f, PluginConfig.MissileFiringAmount.Value, PluginConfig.MissileFiringDuration.Value);
     }
 }

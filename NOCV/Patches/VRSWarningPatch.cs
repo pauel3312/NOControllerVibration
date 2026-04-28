@@ -17,15 +17,15 @@ public class VRSWarningPatch: VibChannelUser<VRSWarningPatch>
     // ReSharper disable once InconsistentNaming
     private static void VRSVibration(float value)
     {
-        if (_isVibOn && value < 0.1f)
+        if (_isVibOn && value < PluginConfig.VRSThreshold.Value)
         {
             _isVibOn = false;
             Channel!.Disable();
             return;
         }
-        if (value < 0.1f) return;
+        if (value < PluginConfig.VRSThreshold.Value) return;
         _isVibOn = true;
-        Channel!.SetVibration(0, value);
+        Channel!.SetVibration(0, value*PluginConfig.VRSMult.Value);
     }
 
     

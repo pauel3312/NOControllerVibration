@@ -20,7 +20,7 @@ public class CargoRampPatches: VibChannelUser<CargoRampPatches>
     public static void OpeningPostfix(CargoRamp __instance)
     {
         if (!GameManager.IsLocalAircraft(__instance.GetComponentInParent<AeroPart>().parentUnit)) return;
-        Channel!.SetVibration(0.5f, 0);
+        Channel!.SetVibration(PluginConfig.CargoRampVibrationValue.Value, 0);
     }
 
     /// <summary>
@@ -49,7 +49,6 @@ public class CargoRampPatches: VibChannelUser<CargoRampPatches>
             Channel!.Disable();
             return;
         }
-        Channel!.SetVibration(0.5f, 0);
-        
+        Channel!.SetVibration(PluginConfig.CargoRampVibrationValue.Value, 0);
     }
 }

@@ -24,6 +24,6 @@ public class DetachPartPatch: VibChannelUser<DetachPartPatch>
     public static void DetachPartPrefix(Unit __instance, byte partID, Vector3 velocity, Vector3 relativePos)
     {
         if (!(__instance.GetPlayer()?.IsLocalPlayer ?? false)) return;
-        Channel!.SetVibration(0f, 1f, 0.1f);
+        Channel!.SetVibration(0f, PluginConfig.DetachPartVibrationValue.Value, PluginConfig.DetachPartVibrationDuration.Value);
     }
 }

@@ -16,7 +16,7 @@ public class BayDoorPatches: VibChannelUser<BayDoorPatches>
     private static void StartVibrationForBayDoor(BayDoor door)
     {
         if (!GameManager.IsLocalAircraft(door.GetComponentInParent<AeroPart>().parentUnit)) return;
-        Channel!.SetVibration(0.25f, 0f, door.doorAudioSource.clip.length);
+        Channel!.SetVibration(PluginConfig.BayDoorVibrationValue.Value, 0f, door.doorAudioSource.clip.length);
     }
     
     /// <summary>
@@ -50,5 +50,4 @@ public class BayDoorPatches: VibChannelUser<BayDoorPatches>
             yield return instr;
         }
     }
-
 }
