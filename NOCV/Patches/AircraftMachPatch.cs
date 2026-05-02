@@ -27,15 +27,19 @@ public class AircraftMachPatch:VibChannelUser<AircraftMachPatch>
         {
             if (instr.Calls(shareAircraftMethod))
             {
+                yield return new CodeInstruction(OpCodes.Ldarg_0);
                 yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AircraftMachPatch), nameof(StartVibration)) );
             }
             yield return instr;
         }
     }
 
-    private static float StartVibration(float num)
+    private static float StartVibration(float num, Aircraft aircraft)
     {
-        Channel!.SetVibration(0f, num*PluginConfig.MachMultiplier.Value, 2*Time.fixedDeltaTime);
+        if (aircraft.Player.IsLocalPlayer)
+        {
+            Channel!.SetVibration(0f, num * PluginConfig.MachMultiplier.Value, 2 * Time.fixedDeltaTime);
+        }        
         return num;
     }
 }
