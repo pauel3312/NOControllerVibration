@@ -80,4 +80,18 @@ public class VibrationService: MonoBehaviour
         GameManager.playerInput.SetVibration(0, Mathf.Clamp(totalHiVib, 0f, 1f), false);
         GameManager.playerInput.SetVibration(1, Mathf.Clamp(totalLowVib, 0f, 1f), false);
     }
+
+    /// <summary>
+    /// Cancels all currently enabled vibration.
+    /// </summary>
+    public void Cancel()
+    {
+        foreach (var channel in  _channels)
+        {
+            channel.SetVibration(0f, 0f);
+        }
+        
+        GameManager.playerInput.SetVibration(0, 0, true);
+        GameManager.playerInput.SetVibration(1, 0, true);
+    }
 }
