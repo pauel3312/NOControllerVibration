@@ -2,8 +2,6 @@ using System;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using NOCV.Helpers;
-using UnityEngine;
 
 namespace NOCV;
 
@@ -52,6 +50,7 @@ public class NOCV: BaseUnityPlugin
         }
     }
     
+    // ReSharper disable once UnusedMember.Local
     private void UnpatchSelf()
     {
         if (Harmony == null)
