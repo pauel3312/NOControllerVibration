@@ -15,6 +15,11 @@ public class VibrationService: MonoBehaviour
     /// </summary>
     public static VibrationService? Instance { get; set; }
 
+    /// <summary>
+    /// If true, this is Disabled and won't start any vibrations.
+    /// </summary>
+    public bool Disabled;
+
     private static HashSet<VibrationChannel> _channels = []; 
 
     /// <summary>
@@ -61,6 +66,7 @@ public class VibrationService: MonoBehaviour
     /// <inheritdocs/>
     public void FixedUpdate()
     {
+        if (Disabled) return;
         var totalHiVib = 0f;
         var totalLowVib = 0f;
         foreach (var channel in _channels.Where(channel => channel.Enabled))
@@ -78,12 +84,13 @@ public class VibrationService: MonoBehaviour
         }
         GameManager.playerInput.SetVibration(0, Mathf.Clamp(totalHiVib, 0f, 1f), false);
         GameManager.playerInput.SetVibration(1, Mathf.Clamp(totalLowVib, 0f, 1f), false);
+        // NOCV.Logger.LogDebug($"Data: {totalLowVib != 0f || totalHiVib != 0f}");
     }
 
     /// <summary>
-    /// Cancels all currently enabled vibration.
+    /// Cancels all currently enabled vibration and disables any further vibration.
     /// </summary>
-    public void Cancel()
+    public void Disable()
     {
         foreach (var channel in  _channels)
         {
@@ -92,5 +99,16 @@ public class VibrationService: MonoBehaviour
         
         GameManager.playerInput.SetVibration(0, 0, true);
         GameManager.playerInput.SetVibration(1, 0, true);
+        Disabled = true;
+        NOCV.Logger.LogDebug("Vibration disabled");
+    }
+    
+    /// <summary>
+    /// Enables vibration if it was previously disabled
+    /// </summary>
+    public void Enable()
+    {
+        Disabled = false;
+        NOCV.Logger.LogDebug("Vibration enabled");
     }
 }
