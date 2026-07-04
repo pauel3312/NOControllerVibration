@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
+using JetBrains.Annotations;
 using NOCV.Features;
 using NuclearOption.Networking;
 
@@ -7,15 +10,23 @@ namespace NOCV.Patches;
 [HarmonyPatch]
 internal class EnableManager
 {
-    [HarmonyPatch(typeof(Aircraft))]
-    [HarmonyPatch(nameof(Aircraft.StartEjectionSequence))]
-    [HarmonyPatch(nameof(Aircraft.CmdStartEjectionSequence))]
-    [HarmonyPrefix]
-    [HarmonyPriority(Priority.High)]
-    internal static void DisableVibration(Aircraft __instance)
+    [HarmonyPatch]
+    public static class EjectionVibrationPatch
     {
-        if (!__instance.GetPlayer()?.IsLocalPlayer ?? false) return;
-        VibrationService.Instance?.Disable();
+        [UsedImplicitly]
+        public static IEnumerable<MethodBase> TargetMethods()
+        {
+            yield return AccessTools.Method(typeof(Aircraft), nameof(Aircraft.StartEjectionSequence));
+            yield return AccessTools.Method(typeof(Aircraft), nameof(Aircraft.CmdStartEjectionSequence));
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPriority(Priority.High)]
+        internal static void DisableVibrationOnEject(Aircraft __instance)
+        {
+            if (!(__instance.GetPlayer()?.IsLocalPlayer ?? false)) return;
+            VibrationService.Instance?.Disable();
+        }
     }
 
     [HarmonyPatch(typeof(Pilot), nameof(Pilot.ApplyDamage))]
