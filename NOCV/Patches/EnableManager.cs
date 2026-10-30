@@ -34,7 +34,7 @@ internal class EnableManager
     internal static void DisableVibrationOnPilotDead(Pilot __instance, float pierceDamage, float blastDamage,
         float fireDamage, float impactDamage)
     {
-        if (!__instance.dead || !(__instance.player?.IsLocalPlayer ?? false)) return;
+        if (!__instance.dead || __instance.ejected || !(__instance.player?.IsLocalPlayer ?? false)) return;
         VibrationService.Instance?.Disable();
     }
 
