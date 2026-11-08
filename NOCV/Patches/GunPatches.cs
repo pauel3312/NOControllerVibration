@@ -10,7 +10,7 @@ namespace NOCV.Patches;
 [HarmonyPatch(typeof(PilotPlayerState))]
 public class GunPatches: VibChannelUser<GunPatches>
 {
-    private static bool _shouldVibrateNextFrame = true;
+    private static bool? _shouldVibrateNextFrame = PluginConfig.GunVibrationToggleFrame.Value ? true : null;
     
     /// <summary>
     ///     Vibration feedback on bullet spawn.
@@ -24,13 +24,13 @@ public class GunPatches: VibChannelUser<GunPatches>
     {
         if (pilot.aircraft.weaponStations.SelectMany(station => station.Weapons.OfType<Gun>()).Any(gun => gun.enabled))
         {
-            Channel!.SetVibration(0f, PluginConfig.GunFiringAmount.Value * (_shouldVibrateNextFrame ? 1f : 0f));
+            Channel!.SetVibration(0f, PluginConfig.GunFiringAmount.Value * (_shouldVibrateNextFrame ?? true ? 1f : 0f));
             _shouldVibrateNextFrame = !_shouldVibrateNextFrame;
         }        
         else
         {
             Channel!.Disable();
-            _shouldVibrateNextFrame = true;
+            _shouldVibrateNextFrame = _shouldVibrateNextFrame == null ? null : true;
         }    
     }
 }

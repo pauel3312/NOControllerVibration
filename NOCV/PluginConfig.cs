@@ -52,6 +52,9 @@ public static class PluginConfig
     internal static ConfigEntry<float> GunFiringAmount = null!;
     private const float DefaultGunFiringAmount = 1f;
     
+    internal static ConfigEntry<bool> GunVibrationToggleFrame = null!;
+    private const bool DefaultGunVibrationToggleFrame = true;
+    
     internal static ConfigEntry<float> MissileFiringAmount = null!;
     private const float DefaultMissileFiringAmount = 0.5f;
 
@@ -76,6 +79,8 @@ public static class PluginConfig
         GearMovingMax = config.Bind("Landing Gear", "Gear moving vibration", DefaultGearMovingMax, "Maximum vibration value for gear moving (between 0 and 1).");
         
         GunFiringAmount = config.Bind("Weapons", "Gun firing", DefaultGunFiringAmount, "Vibration amount for gun fire (between 0 and 1).");
+        GunVibrationToggleFrame = config.Bind("Weapons", "Gun deep rumble", DefaultGunVibrationToggleFrame, "When this is enabled, the gun vibration will toggle every frame. This gives a low freq rumble effect.");
+        
         MissileFiringAmount = config.Bind("Weapons", "Missile firing", DefaultMissileFiringAmount, "Vibration amount for Missile fire (between 0 and 1).");
         MissileFiringDuration = config.Bind("Weaponry", "Missile fire duration", DefaultMissileFiringDuration, "Vibration duration for Missile fire (in seconds). Triggered for every bullet.");
 
