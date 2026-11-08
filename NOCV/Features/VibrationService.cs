@@ -59,7 +59,7 @@ public class VibrationService: MonoBehaviour
     }
 
     /// <inheritdocs/>
-    public void FixedUpdate()
+    public void Update()
     {
         var totalHiVib = 0f;
         var totalLowVib = 0f;
@@ -67,7 +67,7 @@ public class VibrationService: MonoBehaviour
         {
             if(!float.IsPositiveInfinity(channel.Duration))
             {
-                channel.Duration -= Time.fixedDeltaTime;
+                channel.Duration -= Time.deltaTime;
                 if (channel.Duration <= 0f)
                 {
                     channel.SetVibration(0f, 0f);
