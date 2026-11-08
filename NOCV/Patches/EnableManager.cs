@@ -25,7 +25,7 @@ internal class EnableManager
         internal static void DisableVibrationOnEject(Aircraft __instance)
         {
             if (!(__instance.GetPlayer()?.IsLocalPlayer ?? false)) return;
-            VibrationService.Instance?.Disable();
+            VibrationService.Instance?.enabled = false;
         }
     }
 
@@ -35,14 +35,14 @@ internal class EnableManager
         float fireDamage, float impactDamage)
     {
         if (!__instance.dead || __instance.ejected || !(__instance.player?.IsLocalPlayer ?? false)) return;
-        VibrationService.Instance?.Disable();
+        VibrationService.Instance?.enabled = false;
     }
 
     [HarmonyPatch(typeof(QuitMissionButton), nameof(QuitMissionButton.onClick))]
     [HarmonyPostfix]
     internal static void DisableVibrationOnQuitMission(QuitMissionButton __instance)
     {
-        VibrationService.Instance?.Disable();
+        VibrationService.Instance?.enabled = false;
     }
     
     [HarmonyPatch(typeof(Player), nameof(Player.SetAircraft))]
@@ -50,6 +50,6 @@ internal class EnableManager
     public static void PlayerSetAircraftPrefix(Player __instance, Aircraft aircraft)
     {
         if (!__instance.IsLocalPlayer) return;
-        VibrationService.Instance?.Enable();
+        VibrationService.Instance?.enabled = true;
     }
 }
