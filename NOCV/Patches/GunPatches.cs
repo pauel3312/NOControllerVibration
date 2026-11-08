@@ -1,26 +1,36 @@
+using System.Linq;
 using HarmonyLib;
 using NOCV.Helpers;
-using NuclearOption.Networking;
 
 namespace NOCV.Patches;
 
 /// <summary>
 /// Adds vibration feedback on gunshots 
 /// </summary>
-[HarmonyPatch(typeof(Gun))]
+[HarmonyPatch(typeof(PilotPlayerState))]
 public class GunPatches: VibChannelUser<GunPatches>
 {
+    private static bool _shouldVibrateNextFrame = true;
+    
     /// <summary>
     ///     Vibration feedback on bullet spawn.
     /// </summary>
     /// <param name="__instance"></param>
-    /// <param name="timeOffset"></param>
+    /// <param name="pilot"></param>
     [HarmonyPostfix]
-    [HarmonyPatch(nameof(Gun.SpawnBullet))]
+    [HarmonyPatch(nameof(PilotPlayerState.UpdateState))]
     // ReSharper disable once InconsistentNaming
-    public static void SpawnBulletPrefix(Gun __instance, float timeOffset)
+    public static void PilotUpdateStatePostfix(PilotPlayerState __instance, Pilot pilot)
     {
-        if (!(__instance.attachedUnit.GetPlayer()?.IsLocalPlayer ?? false)) return;
-        Channel!.SetVibration(0f, PluginConfig.GunFiringAmount.Value, PluginConfig.GunFiringDuration.Value);
+        if (pilot.aircraft.weaponStations.SelectMany(station => station.Weapons.OfType<Gun>()).Any(gun => gun.enabled))
+        {
+            Channel!.SetVibration(0f, PluginConfig.GunFiringAmount.Value * (_shouldVibrateNextFrame ? 1f : 0f));
+            _shouldVibrateNextFrame = !_shouldVibrateNextFrame;
+        }        
+        else
+        {
+            Channel!.Disable();
+            _shouldVibrateNextFrame = true;
+        }    
     }
 }
